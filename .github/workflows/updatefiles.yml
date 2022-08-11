@@ -15,6 +15,8 @@ jobs:
           echo "test: $(date)" > files/test.txt
           echo "test: $(date)" > files/test2.txt
           
+          git add .
+          
           export GITHUB_REPO="playground"
           export GITHUB_OWNER="apollorion"
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"

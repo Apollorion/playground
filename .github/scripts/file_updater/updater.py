@@ -8,9 +8,6 @@ GITHUB_REPO = os.environ['GITHUB_REPO']
 
 
 def get_changed_files():
-    # Add anything into git that is new or changed
-    os.popen('git add .')
-
     # Get the list of files that have changed or added since last commit
     changed_files = os.popen('git diff --name-only HEAD').read().splitlines()
     return changed_files
