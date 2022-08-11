@@ -32,7 +32,6 @@ def get_file_content_base64(file_path):
         file = open(file_path, 'rb')
         return base64.b64encode(file.read()).decode('utf-8')
     except FileNotFoundError as e:
-        print("File was deleted")
         return False
 
 
