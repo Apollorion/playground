@@ -28,8 +28,12 @@ def get_file_sha(file_path):
 
 
 def get_file_content_base64(file_path):
-    file = open(file_path, 'rb')
-    return base64.b64encode(file.read()).decode('utf-8')
+    try:
+        file = open(file_path, 'rb')
+        return base64.b64encode(file.read()).decode('utf-8')
+    except FileNotFoundError as e:
+        print("File was deleted")
+        return False
 
 
 def main():
@@ -54,12 +58,20 @@ def main():
             }
         }
 
-        update = make_github_request("PUT", f"/repos/{GITHUB_OWNER}/{GITHUB_REPO}/contents/{file}", data=data)
-        if "content" in update:
-            print(f"{file} updated")
+        if new_file_content:
+            update = make_github_request("PUT", f"/repos/{GITHUB_OWNER}/{GITHUB_REPO}/contents/{file}", data=data)
+            if "content" in update:
+                print(f"{file} updated")
+            else:
+                print(update, data)
+                raise Exception(f"Error updating {file}")
         else:
-            print(update, data)
-            raise Exception(f"Error updating {file}")
+            delete = make_github_request("DELETE", f"/repos/{GITHUB_OWNER}/{GITHUB_REPO}/contents/{file}", data=data)
+            if "content" in delete:
+                print(f"{file} deleted")
+            else:
+                print(delete, data)
+                raise Exception(f"Error deleting {file}")
 
 
 if __name__ == "__main__":
