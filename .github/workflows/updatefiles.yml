@@ -6,6 +6,8 @@ on:
         required: true
         type: string
 
+permissions: write-all
+
 jobs:
   updateversion:
     name: Update HR version
@@ -27,7 +29,7 @@ jobs:
           
             # Update the file with github api
             curl -i -X PUT \
-              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -d "{\"message\":\"feat($file): update file contents\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
               https://api.github.com/repos/apollorion/$GITHUB_REPOSITORY/contents/$file
           done
