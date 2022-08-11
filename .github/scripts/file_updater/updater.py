@@ -1,6 +1,7 @@
 import requests
 import os
 import base64
+import json
 
 GITHUB_OWNER = os.environ['GITHUB_OWNER']
 GITHUB_REPO = os.environ['GITHUB_REPO']
@@ -18,7 +19,7 @@ def get_changed_files():
 def make_github_request(method, path, data=None):
     url = f"https://api.github.com{path}"
     headers = {'Authorization': 'token {}'.format(os.environ['GITHUB_TOKEN'])}
-    return requests.request(method, url, headers=headers, data=data).json()
+    return requests.request(method, url, headers=headers, data=json.dumps(data)).json()
 
 
 def get_file_sha(file_path):
