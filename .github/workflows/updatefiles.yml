@@ -12,6 +12,7 @@ jobs:
         run: |
           echo "test: $(date)" > files/test.txt
           echo "test: $(date)" > files/test2.txt
+          rm test.txt
           
           git add .
           
