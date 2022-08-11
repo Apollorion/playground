@@ -1,10 +1,6 @@
 name: "file updater"
 on:
-  workflow_dispatch:
-    inputs:
-      files:
-        required: true
-        type: string
+  workflow_dispatch
 
 permissions: write-all
 
@@ -15,32 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Update file
-        run: |   
-          repo_owner="apollorion"
-          repo_name="playground"
+        run: |
+          echo "test: $(date)" > files/test.txt
+          echo "test: $(date)" > files/test2.txt
           
-          set -e
-          
-          files="${{ inputs.files }}"      
-          echo $files | sed -n 1'p' | tr ',' '\n' | while read file; do
-            echo "Updating file: $file"
-          
-            blob_sha=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/$repo_owner/$repo_name/contents/$file | jq -r -e '.sha')
-          
-            # get the files new content
-            new_content="this is a test: $(date)"
-          
-            # Base64 encode the new content
-            new_content_base64=$(echo -n $new_content | base64)
-          
-            echo "{\"message\":\"feat($file): update file contents\",\"sha\":\"${blob_sha}\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}"
-          
-            # Update the file with github api
-            file_update=$(curl -i -X PUT \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -d "{\"message\":\"feat($file): update file contents\",\"sha\":\"${blob_sha}\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
-              https://api.github.com/repos/$repo_owner/$repo_name/contents/$file)
-          
-            # Check the file was succesfully updated
-            echo $file_update | jq -r -e '.content'
-          done
+          export GITHUB_REPO="playground"
+          export GITHUB_OWNER="apollorion"
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          python ./scripts/file_updater/updater.py
