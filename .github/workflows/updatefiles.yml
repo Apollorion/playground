@@ -28,11 +28,12 @@ jobs:
             blob_sha=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/$repo_owner/$repo_name/contents/$file | jq -r '.sha')
           
             # get the files new content
-            new_content=$(cat $file)
-            new_content="$new_content\n$(date)"
+            new_content="this is a test: $(date)"
           
             # Base64 encode the new content
             new_content_base64=$(echo -n $new_content | base64)
+          
+          echo "{\"message\":\"feat($file): update file contents\",\"sha\":\"${blob_sha}\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}"
           
             # Update the file with github api
             curl -i -X PUT \
