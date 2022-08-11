@@ -60,7 +60,7 @@ def main():
         if "content" in update:
             print(f"{file} updated")
         else:
-            print(update)
+            print(update, data)
             raise Exception(f"Error updating {file}")
 
 
