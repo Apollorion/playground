@@ -18,4 +18,4 @@ jobs:
           export GITHUB_REPO="playground"
           export GITHUB_OWNER="apollorion"
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          python ./scripts/file_updater/updater.py
+          python ./.github/scripts/file_updater/updater.py
