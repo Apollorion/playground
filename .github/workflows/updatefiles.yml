@@ -14,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          
+      - name: Update file
+        run: |   
           repo_owner="apollorion"
           repo_name="playground"
+          
+          set -e
           
           files="${{ inputs.files }}"      
           echo $files | sed -n 1'p' | tr ',' '\n' | while read file; do
