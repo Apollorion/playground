@@ -2,8 +2,6 @@ name: "file updater"
 on:
   workflow_dispatch
 
-permissions: write-all
-
 jobs:
   updateversion:
     name: Update HR version
