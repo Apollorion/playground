@@ -35,6 +35,6 @@ jobs:
             # Update the file with github api
             curl -i -X PUT \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -d "{\"message\":\"feat($file): update file contents\",\"sha\":\"${blob_sha}\"\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
+              -d "{\"message\":\"feat($file): update file contents\",\"sha\":\"${blob_sha}\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
               https://api.github.com/repos/$repo_owner/$repo_name/contents/$file
           done
