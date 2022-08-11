@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           
-          files="${{ input.files }}"      
+          files="${{ inputs.files }}"      
           echo $files | sed -n 1'p' | tr ',' '\n' | while read file; do
             echo "Updating file: $file"
           
@@ -30,7 +30,7 @@ jobs:
           
             # Update the file with github api
             curl -i -X PUT \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -d "{\"message\":\"feat($file): update file contents\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
-            https://api.github.com/repos/apollorion/$GITHUB_REPOSITORY/contents/$file
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -d "{\"message\":\"feat($file): update file contents\",\"committer\":{\"name\":\"github-file-updater\",\"email\":\"no-reply@github.com\"},\"content\":\"${new_content_base64}\"}" \
+              https://api.github.com/repos/apollorion/$GITHUB_REPOSITORY/contents/$file
           done
